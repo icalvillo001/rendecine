@@ -12,4 +12,7 @@
     <string name="fraseJuego">¿Sabrías adivinar la pelicula...</string>
     <string name="adivinaEscena">...viendo una escena?</string>
     <string name="adivinaFrase">...viendo una imagen/frase?</string>
+    <string name="fraseObra">¿Sabrías...</string>
+    <string name="interpretarEscena">...interpretar una escena?</string>
+    <string name="interpretarAudio">...doblar una escena?</string>
 </resources>
