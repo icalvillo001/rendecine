@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">rendecine</string>
+    <string name="nombreInicio">Nombre de usuario:</string>
+    <string name="emailInicio">Email de usuario:</string>
+    <string name="contraInicio">Contraseña de usuario:</string>
+    <string name="botonRegistrarse">Registrarse</string>
+    <string name="botonYaregistrado">Ya estoy registrado</string>
+</resources>
