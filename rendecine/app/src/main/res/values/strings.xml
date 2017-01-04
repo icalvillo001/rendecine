@@ -18,4 +18,5 @@
     <string name="corregir">Corregir</string>
     <string name="preguntaEscena">¿A que pelicula corresponde la escena?</string>
     <string name="siguiente">Siguiente</string>
+    <string name="preguntaFrase">¿A que pelicula corresponde la imagen?</string>
 </resources>
