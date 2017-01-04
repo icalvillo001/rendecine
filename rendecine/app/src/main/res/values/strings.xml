@@ -15,4 +15,7 @@
     <string name="fraseObra">¿Sabrías...</string>
     <string name="interpretarEscena">...interpretar una escena?</string>
     <string name="interpretarAudio">...doblar una escena?</string>
+    <string name="corregir">Corregir</string>
+    <string name="preguntaEscena">¿A que pelicula corresponde la escena?</string>
+    <string name="siguiente">Siguiente</string>
 </resources>
