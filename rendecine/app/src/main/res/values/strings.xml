@@ -19,4 +19,9 @@
     <string name="preguntaEscena">¿A que pelicula corresponde la escena?</string>
     <string name="siguiente">Siguiente</string>
     <string name="preguntaFrase">¿A que pelicula corresponde la imagen?</string>
+    <string name="no_camera">No hay camara</string>
+    <string name="no_app">No hay aplicacion de camara</string>
+    <string name="no_micro">No hay microfono</string>
+
+
 </resources>
