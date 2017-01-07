@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.iratxe.rendecine.ObrasActivity">
+
+    <TextView
+        android:textSize="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fraseObra"
+        android:id="@+id/fraseObra" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/interpretarEscena"
+        android:id="@+id/botonInterpretarEscena"
+        android:layout_gravity="center_horizontal"
+        android:onClick="interpretarEscena"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/interpretarAudio"
+        android:id="@+id/botonInterpretarAudio"
+        android:layout_gravity="center_horizontal"
+        android:onClick="interpretarAudio"/>
+</LinearLayout>

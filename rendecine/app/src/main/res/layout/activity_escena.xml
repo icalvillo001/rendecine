@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/escenaLayout"
+    tools:context="com.example.iratxe.rendecine.EscenaActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/preguntaEscena"
+        android:textSize="20dp" />
+
+    <RadioGroup
+        android:id="@+id/escena_choices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"></RadioGroup>
+
+    <Button
+        android:id="@+id/button_corregir"
+        android:visibility="invisible"
+        android:text="@string/corregir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="corregir"/>
+
+    <Button
+        android:id="@+id/button_siguiente"
+        android:visibility="invisible"
+        android:text="@string/siguiente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="siguiente"/>
+
+    <VideoView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/VideoTest"/>
+
+</LinearLayout>
