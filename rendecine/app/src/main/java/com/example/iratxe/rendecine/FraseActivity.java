@@ -29,25 +29,27 @@ import java.net.URL;
 public class FraseActivity extends AppCompatActivity {
 
     public static String[] preguntasImagen={"La vida es bella","Peter Pan","300","0","El señor de los anillos","El libro de la selva","Siete almas","1"};
-    public final ImageView image=(ImageView)findViewById(R.id.imagenFrase);
+    ImageView image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_frase);
+        image=(ImageView)findViewById(R.id.imagenFrase);
         //cargarImagen();
-       // cargarImagen2();
-        new DownloadImageTask((ImageView)findViewById(R.id.imagenFrase)).execute("http://dl.dropboxusercontent.com/s/al2ce7eox2o4hwi/300.jpg");
-
+        //cargarImagen2();
+      //  new DownloadImageTask((ImageView)findViewById(R.id.imagenFrase)).execute("http://dl.dropboxusercontent.com/s/al2ce7eox2o4hwi/300.jpg");
         makeTestImagen();
     }
 
     public void cargarImagen2(){
-
             new Thread(new Runnable() {
                 @Override
-                public void run() {
-                    try {
-                        final Bitmap bitmap = BitmapFactory.decodeStream((InputStream) new URL("http://dl.dropboxusercontent.com/s/al2ce7eox2o4hwi/300.jpg").getContent());
+              public void run() {
+                try {
+                        InputStream is=(InputStream)new URL("http://dl.dropboxusercontent.com/s/al2ce7eox2o4hwi/300.jpg").getContent();
+                        final Bitmap bitmap = BitmapFactory.decodeStream(is);
+                        is.reset();
+
                         image.post(new Runnable() {
                             @Override
                             public void run() {
@@ -62,7 +64,6 @@ public class FraseActivity extends AppCompatActivity {
                 }
                 }
             }).start();
-
     }
    public void cargarImagen(){
 
