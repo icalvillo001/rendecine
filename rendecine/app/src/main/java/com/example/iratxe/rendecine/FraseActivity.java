@@ -36,13 +36,13 @@ public class FraseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_frase);
         image=(ImageView)findViewById(R.id.imagenFrase);
         //cargarImagen();
-        //cargarImagen2();
+        cargarImagen();
       //  new DownloadImageTask((ImageView)findViewById(R.id.imagenFrase)).execute("http://dl.dropboxusercontent.com/s/al2ce7eox2o4hwi/300.jpg");
         makeTestImagen();
     }
 
     public void cargarImagen2(){
-            new Thread(new Runnable() {
+      /*      new Thread(new Runnable() {
                 @Override
               public void run() {
                 try {
@@ -63,7 +63,11 @@ public class FraseActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 }
-            }).start();
+            }).start();*/
+        Picasso
+                .with(this)
+                .load("http://dl.dropboxusercontent.com/s/al2ce7eox2o4hwi/300.jpg")
+                .into(image);
     }
    public void cargarImagen(){
 
@@ -158,7 +162,7 @@ public class FraseActivity extends AppCompatActivity {
             irPrincipal();
         }else{
             findViewById(R.id.button_siguienteFrase).setVisibility(View.INVISIBLE);
-            cargarImagen();
+            cargarImagen2();
             makeTestImagen();
         }
     }

@@ -12,12 +12,27 @@
         android:text="@string/preguntaEscena"
         android:textSize="20dp" />
 
-    <RadioGroup
+ <!--   <RadioGroup
         android:id="@+id/escena_choices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"></RadioGroup>
-
+        android:orientation="vertical"></RadioGroup>-->
+<RadioGroup
+    android:id="@+id/escena_choices"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RadioButton
+        android:id="@+id/radio1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <RadioButton
+        android:id="@+id/radio2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <RadioButton
+        android:id="@+id/radio3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
     <Button
         android:id="@+id/button_corregir"
         android:visibility="invisible"
@@ -25,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="corregir"/>
-
+</RadioGroup>
     <Button
         android:id="@+id/button_siguiente"
         android:visibility="invisible"
