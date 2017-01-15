@@ -80,43 +80,17 @@ public class EscenaActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(Void aVoid) {
-
-                //Se visualiza el enunciado del test
-                RadioButton radio1=(RadioButton)findViewById(R.id.radio1);
-                radio1.setText(escena.getEscenaList().get(0).getOpc1());
-                radio1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        findViewById(R.id.button_corregir).setVisibility(View.VISIBLE);
-                    }
-                });
-                RadioButton radio2=(RadioButton)findViewById(R.id.radio2);
-                radio2.setText(escena.getEscenaList().get(1).getOpc2());
-                radio2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        findViewById(R.id.button_corregir).setVisibility(View.VISIBLE);
-                    }
-                });
-                RadioButton radio3=(RadioButton)findViewById(R.id.radio3);
-                radio3.setText(escena.getEscenaList().get(2).getOpc3());
-                radio3.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        findViewById(R.id.button_corregir).setVisibility(View.VISIBLE);
-                    }
-                });
                 cargarVideo();
-
-
+                makeTest();
                 super.onPostExecute(aVoid);
             }
         }.execute();
     }
 
-    int posEscena=0;
+
     public void makeTest() {
-        int id=0;
+
+        //Se visualiza el enunciado del test
         RadioButton radio1=(RadioButton)findViewById(R.id.radio1);
         radio1.setText(escena.getEscenaList().get(0).getOpc1());
         radio1.setOnClickListener(new View.OnClickListener() {
@@ -154,8 +128,7 @@ public class EscenaActivity extends AppCompatActivity {
        // video.setVideoURI(Uri.parse(preguntas[videoPosicion]));
         video.setVideoURI(Uri.parse(escena.getEscenaList().get(0).getSrcVideo()));
         videoPosicion=videoPosicion+1;
-        //   ViewGroup.LayoutParams params=new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
-        //  video.setLayoutParams(params);
+
         MediaController mediacontroller = new MediaController(this) {
             @Override
             public void hide(){
@@ -211,7 +184,7 @@ public class EscenaActivity extends AppCompatActivity {
         RadioGroup group = (RadioGroup) findViewById(R.id.escena_choices);
         group.removeAllViews();
 
-        if((posEscena)==preguntas.length){
+        if((escena.getEscenaList().size())==preguntas.length){
             irPrincipalEscena();
         }else{
             findViewById(R.id.button_siguiente).setVisibility(View.INVISIBLE);
