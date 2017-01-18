@@ -1,4 +1,4 @@
-package com.example.iratxe.rendecine;
+package com.example.iratxe.rendecine.model;
 
 import java.util.ArrayList;
 import java.util.List;

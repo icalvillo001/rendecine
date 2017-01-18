@@ -35,5 +35,6 @@
         android:layout_height="wrap_content"
         android:text="@string/entrar"
         android:id="@+id/botonEntrar"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:onClick="login"/>
 </LinearLayout>

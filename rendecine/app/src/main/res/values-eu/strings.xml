@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="app_name">rendecine</string>
+    <string name="nombreInicio">Erabiltzailearen izena:</string>
+    <string name="emailInicio">Erabiltzailearen imeila:</string>
+    <string name="contraInicio">erabiltzaile-pasahitza </string>
+    <string name="botonRegistrarse">erregistratzea</string>
+    <string name="botonYaregistrado">Erregistratuta nago</string>
+    <string name="entrar">Sartu</string>
+    <string name="obras">Literaturari egokitutako lanak</string>
+    <string name="juegos">Jokuak</string>
+    <string name="foro">Foru</string>
+    <string name="fraseJuego"></string>
+    <string name="adivinaEscena"></string>
+    <string name="fraseObra"></string>
+    <string name="interpretarEscena"></string>
+    <string name="interpretarAudio"></string>
+    <string name="corregir">zuzentzea</string>
+    <string name="preguntaEscena"></string>
+    <string name="siguiente">Hurrengoa</string>
+    <string name="preguntaFrase"></string>
+    <string name="no_camera">Ez dago kamerarik</string>
+    <string name="no_app">Aplikaziorik ez dago kamerarako</string>
+    <string name="no_micro">Ez dago mikrofonorik</string>
+    <string name="grabar">Grabatu</string>
+    <string name="adivinaFrase"></string>
+
+</resources>

@@ -18,9 +18,7 @@ public class JuegosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_juegos);
 
-        /*        Intent intent=getIntent();
-        TextView textLogin=(TextView)findViewById(R.id.menu_login);
-        textLogin.setText(intent.getStringExtra(EXTRA_LOGIN));*/
+        
     }
 
     public void escena(View view){

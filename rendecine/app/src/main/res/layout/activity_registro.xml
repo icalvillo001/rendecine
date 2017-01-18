@@ -58,5 +58,6 @@
         android:layout_height="wrap_content"
         android:text="@string/botonYaregistrado"
         android:id="@+id/yaRegistrado"
+        android:onClick="inicioLogin"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>
