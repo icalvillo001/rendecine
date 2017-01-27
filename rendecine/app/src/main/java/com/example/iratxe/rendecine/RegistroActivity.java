@@ -91,32 +91,34 @@ public class RegistroActivity extends AppCompatActivity {
         boolean comp = false;
 
         //Se comprueba si existe o no el usuario
-        for (int i = 0; i < usuarios.getUsuarios().size(); i++) {
-            if (login.equals(usuarios.getUsuarios().get(i).getNombre())) {
-                //Ya existe en la base de datos y le solicita que vuelva a intorudcir nombre
-                comp = false;
+        if(usuarios.getUsuarios().size()==0){
+            //No existe en la base de datos y se añade el usuario
+            try {
 
-            } else {
-                //No existe en la base de datos y se añade el usuario
-                try {
-
-                    JSONObject json2 = new JSONObject();
-                    json2.put("nombre", login);
-                    json2.put("password", passwd);
-                    json2.put("email", email);
-                    rest.postJson(json2, "addUser");
-                    comp = true;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
+                JSONObject json2 = new JSONObject();
+                json2.put("nombre", login);
+                json2.put("password", passwd);
+                json2.put("email", email);
+                rest.postJson(json2, "addUser");
+                comp = true;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        }
-        return comp;
+        }else{
+            for(int i=0;i<usuarios.getUsuarios().size();i++){
+                if (login.equals(usuarios.getUsuarios().get(i).getNombre())) {
+                    //Ya existe en la base de datos y le solicita que vuelva a intorudcir nombre
+                    comp = false;
 
+                } else {
+                    comp=true;
+                }
+            }
+
+        }
+       return comp;
     }
 
     public void authenticate(final String login, final String passwd, final String email) {
