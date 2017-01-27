@@ -90,6 +90,6 @@ public class ForoActivity extends AppCompatActivity {
     }
 
     public void escribir(View view){
-        Intent intent = new Intent(this,);
+       // Intent intent = new Intent(this,);
     }
 }

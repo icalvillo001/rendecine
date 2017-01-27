@@ -22,13 +22,10 @@ import java.io.IOException;
  */
 public class RegistroActivity extends AppCompatActivity {
 
-    String login;
-    String passwd;
-    String email;
-
-    RestClient rest= new RestClient("http://u017633.ehu.eus:28080/rendecineBD/rest/Rendecine");
 
     Usuarios usuarios = new Usuarios();
+    RestClient rest = new RestClient("http://u017633.ehu.eus:28080/rendecineBD/rest/Rendecine");
+
 
 
 
@@ -37,18 +34,19 @@ public class RegistroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registro);
     }
 
-    public void login(View view){
+    public void login(View view) {
 
 
-        login=((EditText)findViewById(R.id.nombreInicioUsu)).getText().toString();
-        passwd=((EditText)findViewById(R.id.contraInicioUsu)).getText().toString();
-        email=((EditText)findViewById(R.id.emailInicioUsu)).getText().toString();
+        String login = ((EditText) findViewById(R.id.nombreInicioUsu)).getText().toString();
+        String passwd = ((EditText) findViewById(R.id.contraInicioUsu)).getText().toString();
+        String email = ((EditText) findViewById(R.id.emailInicioUsu)).getText().toString();
 
-        if(login!=null && passwd !=null && email!=null) {
+        if (login != null && passwd != null && email != null) {
+            //Primero se va a verificar si el nombre de usuario existe o no en la base de datos
+            //Si no existe se añadira, si existe solicitara de nuevo un nombre
+            authenticate(login,passwd,email);
 
-            authenticate(login, passwd);
-
-        }else {
+        } else {
             Toast.makeText(
                     this,
                     "Rellena todos los campos",
@@ -56,72 +54,107 @@ public class RegistroActivity extends AppCompatActivity {
             ).show();
         }
     }
-    public void authenticate(final String login,final String passwd) {
 
-        //Se comprueba en el servidor que existe ese usuario
-        new AsyncTask<Void,Void,Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                try{
-
-                    JSONObject json = rest.getJSON(String.format("requestLogin?nombre=%s&password=%s", login,passwd));
-
-                    //Se coge las diferentes opciones y los datos necesario
-                    JSONArray array = json.getJSONArray("usuario");
-                    for(int i=0;i<array.length();i++) {
-                        JSONObject itemJSON = array.getJSONObject(i);
-
-                        Usuarios.Usuario usuario = new Usuarios.Usuario();
-
-                        usuario.setNombre(itemJSON.getString("nombre"));
-                        usuario.setPassword(itemJSON.getString("password"));
-
-                        usuarios.getUsuarios().add(usuario);
-                    }
+    public void consultarDatos(String login , String passwd) {
 
 
-                }catch (JSONException e){
-                    e.printStackTrace();
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
+        try {
 
-                return null;
+            //Se consulta en la base de datos si existe o no el usuario
+            JSONObject json = rest.getJSON(String.format("requestLogin?nombre=%s&password=%s", login, passwd));
+
+            //Se guardan los datos en una variable de tipo usuarios
+            JSONArray array = json.getJSONArray("usuario");
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject itemJSON = array.getJSONObject(i);
+
+                Usuarios.Usuario usuario = new Usuarios.Usuario();
+
+                usuario.setNombre(itemJSON.getString("nombre"));
+                usuario.setPassword(itemJSON.getString("password"));
+
+                usuarios.getUsuarios().add(usuario);
             }
 
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                for(int i=0; i<usuarios.getUsuarios().size();i++)
-                {
-                    if(login.equals(usuarios.getUsuarios().get(i).getNombre())){
 
-                        Toast.makeText(
-                                RegistroActivity.this,
-                                "Acceso correcto",
-                                Toast.LENGTH_SHORT
-                        ).show();
-
-                        Intent intent=new Intent(RegistroActivity.this,PrincipalActivity.class);
-                        startActivity(intent);
-                    }else{
-                        Toast.makeText(
-                                RegistroActivity.this,
-                                "Login incorrecto",
-                                Toast.LENGTH_SHORT
-                        ).show();
-                    }
-                }
-
-
-                super.onPostExecute(aVoid);
-            }
-        }.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
     }
-    public void inicioLogin(View view){
-        Intent intent = new Intent(this,InicioActivity.class);
-        startActivity(intent);
+
+
+    public boolean guardarDatos(String login, String passwd, String email) {
+        boolean comp = false;
+
+        //Se comprueba si existe o no el usuario
+        for (int i = 0; i < usuarios.getUsuarios().size(); i++) {
+            if (login.equals(usuarios.getUsuarios().get(i).getNombre())) {
+                //Ya existe en la base de datos y le solicita que vuelva a intorudcir nombre
+                comp = false;
+
+            } else {
+                //No existe en la base de datos y se añade el usuario
+                try {
+
+                    JSONObject json2 = new JSONObject();
+                    json2.put("nombre", login);
+                    json2.put("password", passwd);
+                    json2.put("email", email);
+                    rest.postJson(json2, "addUser");
+                    comp = true;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }
+        return comp;
+
+    }
+
+    public void authenticate(final String login, final String passwd, final String email) {
+
+
+        new AsyncTask<Void, Void, Boolean>() {
+
+            @Override
+            protected Boolean doInBackground(Void... voids) {
+                boolean comp = false;
+                //Se consulta el nombre
+                consultarDatos(login, passwd);
+                //Se guarda el nombre si no existe y devuelve true
+                //No se guarda si existe y devuelve false
+                comp = guardarDatos(login, passwd, email);
+                return comp;
+            }
+
+
+            protected void onPostExecute(Boolean comp) {
+                if (comp){
+                    //Si es true que se cambie de actividad a inicio
+                    Intent intent = new Intent(RegistroActivity.this, InicioActivity.class);
+                    startActivity(intent);
+
+
+                } else {
+                    //Si es false se indica que introduzca otro nombre
+                    Toast.makeText(
+                            RegistroActivity.this,
+                            "El nombre de usuario ya existe",
+                            Toast.LENGTH_SHORT
+                    ).show();
+                }
+
+            }
+
+        }.execute();
 
 
     }
