@@ -26,7 +26,8 @@
         android:layout_height="wrap_content"
         android:text="@string/foro"
         android:id="@+id/botonForo"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:onClick="peliculas"/>
 >
 
 </LinearLayout>

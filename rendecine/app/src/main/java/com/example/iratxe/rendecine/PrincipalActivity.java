@@ -29,4 +29,9 @@ public class PrincipalActivity extends AppCompatActivity {
         Intent intent=new Intent(this,ObrasActivity.class);
         startActivity(intent);
     }
+
+    public void peliculas(View view){
+        Intent intent = new Intent(this,peliculasActivity.class);
+        startActivity(intent);
+    }
 }

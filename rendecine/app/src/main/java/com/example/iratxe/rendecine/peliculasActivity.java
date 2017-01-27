@@ -24,7 +24,7 @@ import java.security.acl.Group;
 public class peliculasActivity extends AppCompatActivity {
 
     RestClient rest= new RestClient("http://u017633.ehu.eus:28080/rendecineBD/rest/Rendecine");
-    JSONArray array = new JSONArray();
+    //JSONArray array = new JSONArray();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +36,10 @@ public class peliculasActivity extends AppCompatActivity {
     public void mostrarPeliculas(){
 
         //Consultamos las peliculas en el servidor
-        new AsyncTask<Void,Void,Void>() {
+        new AsyncTask<Void,Void,JSONArray>() {
             @Override
-            protected Void doInBackground(Void... voids) {
+            protected JSONArray doInBackground(Void... voids) {
+                JSONArray array = new JSONArray();
                 try{
 
                     JSONObject json = rest.getJSON(String.format("requestPeliculas"));
@@ -51,11 +52,11 @@ public class peliculasActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                return null;
+                return array;
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
+            protected void onPostExecute(JSONArray array) {
                 RadioGroup group = (RadioGroup)findViewById(R.id.prueba);
                 try {
                     for(int i=0; i<array.length();i++) {
@@ -82,7 +83,7 @@ public class peliculasActivity extends AppCompatActivity {
                 }
 
 
-                super.onPostExecute(aVoid);
+
             }
         }.execute();
 

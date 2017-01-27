@@ -21,8 +21,7 @@ import java.io.IOException;
  */
 public class InicioActivity  extends AppCompatActivity {
 
-    String nombre;
-    String passwd;
+
 
     RestClient rest= new RestClient("http://u017633.ehu.eus:28080/rendecineBD/rest/Rendecine");
 
@@ -34,13 +33,11 @@ public class InicioActivity  extends AppCompatActivity {
     }
     public void login(View view){
 
+        String login=((EditText)findViewById(R.id.nombreInicioUsu2)).getText().toString();
+        String passwd=((EditText)findViewById(R.id.contraInicioUsu2)).getText().toString();
 
-
-        nombre=((EditText)findViewById(R.id.nombreInicioUsu2)).getText().toString();
-        passwd=((EditText)findViewById(R.id.contraInicioUsu2)).getText().toString();
-
-        if(nombre!=null && passwd !=null) {
-            authenticate(nombre, passwd);
+        if(login!=null && passwd !=null) {
+            authenticate(login, passwd);
 
         }else {
             Toast.makeText(
@@ -57,7 +54,7 @@ public class InicioActivity  extends AppCompatActivity {
             protected Void doInBackground(Void... voids) {
                 try{
 
-                    JSONObject json = rest.getJSON(String.format("requestLogin?nombre=%s&password=%s", nombre,passwd));
+                    JSONObject json = rest.getJSON(String.format("requestLogin?nombre=%s&password=%s", login,passwd));
 
                     //Se coge las diferentes opciones y los datos necesario
                     JSONArray array = json.getJSONArray("usuario");
