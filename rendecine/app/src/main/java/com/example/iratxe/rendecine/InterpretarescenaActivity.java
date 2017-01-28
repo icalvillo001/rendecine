@@ -42,18 +42,23 @@ public class InterpretarescenaActivity  extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interpretarescena);
-        //makeVideo();
+        //Se obtinen los videos del servidor
         enlaceVideo();
     }
 
     int videoPosicionEscena=0;
     public void makeVideo(){
 
+        //Se crea el videoView donde se vera el video
         VideoView videoEscena=(VideoView)findViewById(R.id.escenaVideo);
+        //Se añade la direccion del video de la lista obtenida del srevidor
+        //Para poder ir pasando de video se ha definido una variable videoPosicionEscena con la que
+        //se hara la cuenta. Esta ira aumentando en uno. Cada vez que se de a siguiente se visualizara el siguiente video.
+        //Si la variable es de la misma longitud que la lista se visualiza un mensaje de terminado al usuario
+        //y se vuelve al  menu principal
         videoEscena.setVideoURI(Uri.parse(interpretar.getInterList().get(videoPosicionEscena).getSrcVideo()));
         videoPosicionEscena++;
-        //   ViewGroup.LayoutParams params=new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
-        //  video.setLayoutParams(params);
+        //Se define el media controller
         MediaController mediacontroller = new MediaController(this) {
             @Override
             public void hide(){
@@ -78,6 +83,8 @@ public class InterpretarescenaActivity  extends AppCompatActivity{
             protected Void doInBackground(Void... voids) {
                 try{
 
+
+                    //Se hace la peticion al servidor
                     JSONObject json = rest.getJSON(String.format("requestInter"));
 
                     //Se coge las diferentes opciones y los datos necesario
@@ -89,6 +96,7 @@ public class InterpretarescenaActivity  extends AppCompatActivity{
 
                         inter.setSrcVideo(itemJSON.getString("srcVideo"));
 
+                        //Se añaden los videos a la lista que se utiliza en el metodo makeVideo para visualizar
                         interpretar.getInterList().add(inter);
                     }
 
@@ -158,13 +166,21 @@ public class InterpretarescenaActivity  extends AppCompatActivity{
         }
     }
 
-
+    //Metodo que ira avanzando en los videos
     public void siguienteInterpretarE(View view){
 
+        //Si el videoPosicionEscena tiene la misma longitud que la lista, se vuelve al menu
         if(videoPosicionEscena==interpretar.getInterList().size()){
+
+            Toast.makeText(
+                    InterpretarescenaActivity.this,
+                    "No hay mas videos!",
+                    Toast.LENGTH_SHORT
+            ).show();
             Intent intent=new Intent(this,PrincipalActivity.class);
             startActivity(intent);
         }else{
+            //si no, se reproduce otro video
             makeVideo();
         }
 

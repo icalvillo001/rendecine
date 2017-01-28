@@ -3,6 +3,7 @@ package com.example.iratxe.rendecine;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -13,7 +14,14 @@ import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.example.iratxe.rendecine.model.Interpretar;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by aitor on 5/01/17.
@@ -22,24 +30,28 @@ public class InterpretaraudioActivity extends AppCompatActivity {
 
     public static final int AUDIO_REQUEST_CODE=1;
 
+    RestClient rest= new RestClient("http://u017633.ehu.eus:28080/rendecineBD/rest/Rendecine");
+    Interpretar interpretar = new Interpretar();
+
     String [] videoURL= {"http://u017633.ehu.eus:28080/static/ServidorTta/AndroidManifest.mp4","http://u017633.ehu.eus:28080/static/ServidorTta/AndroidManifest.mp4","http://u017633.ehu.eus:28080/static/ServidorTta/AndroidManifest.mp4"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interpretaraudio);
-        makeInterpretarAudio();
+        //makeInterpretarAudio();
+        enlaceVideo();
 
     }
     int videoPosicion=0;
     public void makeInterpretarAudio(){
-        // VideoView video =new VideoView(this);
+
         VideoView video= (VideoView)findViewById(R.id.interpretarAudio);
-        //video.setId(0);
-        video.setVideoURI(Uri.parse(videoURL[videoPosicion]));
+
+        //video.setVideoURI(Uri.parse(videoURL[videoPosicion]));
+        video.setVideoURI(Uri.parse(interpretar.getInterList().get(videoPosicion).getSrcVideo()));
         videoPosicion++;
-        //   ViewGroup.LayoutParams params=new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
-        //  video.setLayoutParams(params);
+
         MediaController mediacontroller = new MediaController(this) {
             @Override
             public void hide(){
@@ -57,6 +69,50 @@ public class InterpretaraudioActivity extends AppCompatActivity {
         video.setMediaController(mediacontroller);
     }
 
+
+    public void enlaceVideo(){
+
+        new AsyncTask<Void,Void,Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try{
+
+
+                    //Se hace la peticion al servidor
+                    JSONObject json = rest.getJSON(String.format("requestInter"));
+
+                    //Se coge las diferentes opciones y los datos necesario
+                    JSONArray array = json.getJSONArray("interpretacion");
+                    for(int i=0;i<array.length();i++) {
+                        JSONObject itemJSON = array.getJSONObject(i);
+
+                        Interpretar.inter inter= new Interpretar.inter();
+
+                        inter.setSrcVideo(itemJSON.getString("srcVideo"));
+
+                        //Se añaden los videos a la lista que se utiliza en el metodo makeVideo para visualizar
+                        interpretar.getInterList().add(inter);
+                    }
+
+
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                makeInterpretarAudio();
+                super.onPostExecute(aVoid);
+            }
+        }.execute();
+
+
+    }
     public void grabarAudio(View view){
 
         if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_MICROPHONE))
