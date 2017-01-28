@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.iratxe.rendecine.model.Usuario;
+
 import com.example.iratxe.rendecine.model.Usuarios;
 
 import org.json.JSONArray;
