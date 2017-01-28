@@ -1,6 +1,8 @@
 package com.example.iratxe.rendecine;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -29,13 +31,22 @@ public class EscribirActivity extends AppCompatActivity {
         //Se coge los datos introducidos por el usuario
         final String asunto = ((EditText) findViewById(R.id.asuntoUsuario)).getText().toString();
         final String mensaje = ((EditText) findViewById(R.id.mensajeUsuario)).getText().toString();
-        final String usuario = ((EditText)findViewById(R.id.nombreUsuario)).getText().toString();
+
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
                 try {
                     //Se crea el objeto json que se envia al servidor
                     JSONObject json2 = new JSONObject();
+
+
+                    //Se coge el nombre de usuario a insertar en el mensaje de la base de datos del introducido por el usuario
+                    SharedPreferences prefs =
+                            getSharedPreferences("DatosUsuario", Context.MODE_PRIVATE);
+
+                    String usuario= prefs.getString("nombreUsuario","null");
+
+
                     json2.put("usuario",usuario);
                     json2.put("mensaje", mensaje);
                     json2.put("asunto", asunto);

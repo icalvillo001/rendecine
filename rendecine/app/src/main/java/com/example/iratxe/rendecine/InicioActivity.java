@@ -1,6 +1,8 @@
 package com.example.iratxe.rendecine;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.iratxe.rendecine.model.Usuarios;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -91,6 +94,14 @@ public class InicioActivity  extends AppCompatActivity {
                                 "Acceso correcto",
                                 Toast.LENGTH_SHORT
                         ).show();
+
+                        //Se guarda el nombre de usuario en shared preferences ya que se utilizara para el
+                        //registro de mensajes en el foro
+                        SharedPreferences datos =
+                                getSharedPreferences("DatosUsuario", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = datos.edit();
+                        editor.putString("nombreUsuario", login);
+                        editor.commit();
 
                         Intent intent=new Intent(InicioActivity.this,PrincipalActivity.class);
                         startActivity(intent);
