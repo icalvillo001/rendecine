@@ -79,8 +79,17 @@ public class ForoActivity extends AppCompatActivity {
                         //Se crean los diferentes text view y se rellenan
                         JSONObject itemJSON = array.getJSONObject(i);
 
+                        TextView usuario= new TextView(ForoActivity.this);
+                        usuario.setText("___________________________________________________ \n Usuario: ");
+                        usuario.setTextSize(16);
+                        usuario.setTextColor(Color.BLACK);
+
+                        TextView text0 = new TextView(ForoActivity.this);
+                        text0.setTextSize(14);
+                        text0.setText(itemJSON.getString("usuario"));
+
                         TextView asunto = new TextView(ForoActivity.this);
-                        asunto.setText("___________________________________________________ \n Asunto: ");
+                        asunto.setText("Asunto: ");
                         asunto.setTextSize(16);
                         asunto.setTextColor(Color.BLACK);
 
@@ -99,6 +108,8 @@ public class ForoActivity extends AppCompatActivity {
                         text1.setText(String.format("%s \n ____________________________________________________________",itemJSON.getString("mensaje")));
 
                         //Se añade los text al layout
+                        layout.addView(usuario);
+                        layout.addView(text0);
                         layout.addView(asunto);
                         layout.addView(text);
                         layout.addView(mensaje);

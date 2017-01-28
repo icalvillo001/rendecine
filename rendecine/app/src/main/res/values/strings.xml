@@ -27,5 +27,6 @@
     <string name="mensaje">Mensaje:</string>
     <string name="enviar">Enviar</string>
     <string name="escribir">Escribir mensaje</string>
+    <string name="usuario">Nombre usuario</string>
 
 </resources>

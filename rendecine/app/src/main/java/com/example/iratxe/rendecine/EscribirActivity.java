@@ -29,13 +29,14 @@ public class EscribirActivity extends AppCompatActivity {
         //Se coge los datos introducidos por el usuario
         final String asunto = ((EditText) findViewById(R.id.asuntoUsuario)).getText().toString();
         final String mensaje = ((EditText) findViewById(R.id.mensajeUsuario)).getText().toString();
-
+        final String usuario = ((EditText)findViewById(R.id.nombreUsuario)).getText().toString();
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
                 try {
                     //Se crea el objeto json que se envia al servidor
                     JSONObject json2 = new JSONObject();
+                    json2.put("usuario",usuario);
                     json2.put("mensaje", mensaje);
                     json2.put("asunto", asunto);
                     //Se coge el nombre de la pelicula para relacionarla con el mensaje del usuario
