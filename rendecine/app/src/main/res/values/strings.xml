@@ -23,5 +23,9 @@
     <string name="no_app">No hay aplicacion de camara</string>
     <string name="no_micro">No hay microfono</string>
     <string name="grabar">Grabar</string>
+    <string name="asunto">Asunto del mensaje:</string>
+    <string name="mensaje">Mensaje:</string>
+    <string name="enviar">Enviar</string>
+    <string name="escribir">Escribir mensaje</string>
 
 </resources>

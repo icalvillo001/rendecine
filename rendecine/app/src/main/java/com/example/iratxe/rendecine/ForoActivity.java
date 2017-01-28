@@ -1,6 +1,7 @@
 package com.example.iratxe.rendecine;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,9 +9,11 @@ import android.text.Layout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -45,7 +48,9 @@ public class ForoActivity extends AppCompatActivity {
             protected Void doInBackground(Void... voids) {
                 try{
 
+                    //nombre.replace(" ","%20");
                     JSONObject json = rest.getJSON(String.format("requestForo?nombre=%s",nombre));
+
                     //Se coge las diferentes opciones y los datos necesario
                     array = json.getJSONArray("foro");
 
@@ -60,23 +65,57 @@ public class ForoActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                RadioGroup group = (RadioGroup)findViewById(R.id.prueba);
-                try {
-                    for(int i=0; i<array.length();i++) {
 
+                LinearLayout layout=(LinearLayout) findViewById(R.id.layoutForo);
+
+                try {
+                    for (int i = 0; i < array.length(); i++) {
+
+                        //Se visualizan los mensajes del foro
+
+                        //Se indica la orientacion en vertical porque si no se pone en horizontal
+                        layout.setOrientation(LinearLayout.VERTICAL);
+
+                        //Se crean los diferentes text view y se rellenan
                         JSONObject itemJSON = array.getJSONObject(i);
 
+                        TextView asunto = new TextView(ForoActivity.this);
+                        asunto.setText("___________________________________________________ \n Asunto: ");
+                        asunto.setTextSize(16);
+                        asunto.setTextColor(Color.BLACK);
+
+                        TextView mensaje = new TextView(ForoActivity.this);
+                        mensaje.setText("Mensaje: ");
+                        mensaje.setTextSize(16);
+                        mensaje.setTextColor(Color.BLACK);
 
                         TextView text = new TextView(ForoActivity.this);
-                        text.setText(itemJSON.getString("mensaje"));
-                        TextView text1 = new TextView(ForoActivity.this);
-                        text1.setText(itemJSON.getString("asunto"));
+                        text.setTextSize(14);
+                        text.setText(itemJSON.getString("asunto"));
 
-                        RelativeLayout layout=(RelativeLayout) findViewById(R.id.layoutForo);
+
+                        TextView text1 = new TextView(ForoActivity.this);
+                        text1.setTextSize(14);
+                        text1.setText(String.format("%s \n ____________________________________________________________",itemJSON.getString("mensaje")));
+
+                        //Se añade los text al layout
+                        layout.addView(asunto);
                         layout.addView(text);
+                        layout.addView(mensaje);
                         layout.addView(text1);
 
+
                     }
+                    Button boton = new Button(ForoActivity.this);
+                    boton.setText(R.string.escribir);
+                    boton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            escribirForo(view);
+                        }
+                    });
+
+                    layout.addView(boton);
 
                 }catch (JSONException e){
                     e.printStackTrace();
@@ -89,7 +128,15 @@ public class ForoActivity extends AppCompatActivity {
 
     }
 
-    public void escribir(View view){
-       // Intent intent = new Intent(this,);
+    public void escribirForo(View v){
+
+        Intent intent = new Intent(this, EscribirActivity.class);
+
+        //Se pasa el nombre del foro a crear
+        Bundle extras = getIntent().getExtras();
+        intent.putExtra("nombre",extras.getString("nombre"));
+        //Se lanza la actividad
+        startActivity(intent);
+
     }
 }

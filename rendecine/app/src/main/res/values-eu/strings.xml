@@ -25,5 +25,9 @@
     <string name="no_micro">Ez dago mikrofonorik</string>
     <string name="grabar">Grabatu</string>
     <string name="adivinaFrase"></string>
+    <string name="asunto">Mezuaren gaia</string>
+    <string name="mensaje">Mezua:</string>
+    <string name="enviar">Bidali</string>
+    <string name="escribir">Mezua idastea</string>
 
 </resources>

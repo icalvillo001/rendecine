@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject json2 = new JSONObject();
                     json2.put("mensaje",men);
                     json2.put("asunto",asun);
-                    rest.postJson(json2, "addMensaje?nombre=Titanic");
+                    rest.postJson(json2,"addMensaje?nombre=Titanic");
 
 
                 }catch (JSONException e){

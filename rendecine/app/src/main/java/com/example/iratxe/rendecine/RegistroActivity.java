@@ -26,9 +26,6 @@ public class RegistroActivity extends AppCompatActivity {
     Usuarios usuarios = new Usuarios();
     RestClient rest = new RestClient("http://u017633.ehu.eus:28080/rendecineBD/rest/Rendecine");
 
-
-
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
