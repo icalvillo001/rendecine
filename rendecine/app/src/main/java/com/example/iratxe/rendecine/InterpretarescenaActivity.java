@@ -93,63 +93,25 @@ public class InterpretarescenaActivity  extends AppCompatActivity{
             e.printStackTrace();
         }
 
-       /* new AsyncTask<Void,Void,Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                try{
-
-
-                    //Se hace la peticion al servidor
-                    JSONObject json = rest.getJSON(String.format("requestInter"));
-
-                    //Se coge las diferentes opciones y los datos necesario
-                    JSONArray array = json.getJSONArray("interpretacion");
-                    for(int i=0;i<array.length();i++) {
-                        JSONObject itemJSON = array.getJSONObject(i);
-
-                        Interpretar.inter inter= new Interpretar.inter();
-
-                        inter.setSrcVideo(itemJSON.getString("srcVideo"));
-
-                        //Se añaden los videos a la lista que se utiliza en el metodo makeVideo para visualizar
-                        interpretar.getInterList().add(inter);
-                    }
-
-
-                }catch (JSONException e){
-                    e.printStackTrace();
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                makeVideo();
-                super.onPostExecute(aVoid);
-            }
-        }.execute();*/
 
 
     }
 
     public void grabarVideo(View view){
 
+        //El videose guardara en un path por defecto
+        //con nombre tambien por defecto
+        //Quiero que se guarde en un path concreto con un nombre concreto para luego poder reproducir el video
+        //Defino el nombre del video y el path a guardar
+        File mediaFile =
+                new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                        + "/myvideo.mp4");
+
         //Se verifica que hay una camara en el dispositivo
         if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA))
             Toast.makeText(this,R.string.no_camera,Toast.LENGTH_SHORT).show();
         else{
             //Con el intent se llamara a la aplicacion externa de camara
-            //El videose guardara en un path por defecto
-            //con nombre tambien por defecto
-            //Quiero que se guarde en un path concreto con un nombre concreto para luego poder reproducir el video
-
-            //Defino el nombre del video y el path a guardar
-            File mediaFile =
-                    new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                            + "/myvideo.mp4");
 
             //Lanzo el intent
             Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
@@ -159,10 +121,12 @@ public class InterpretarescenaActivity  extends AppCompatActivity{
                 Uri videoUri = Uri.fromFile(mediaFile);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, videoUri);
                 startActivityForResult(intent, VIDEO_REQUEST_CODE);
+                findViewById(R.id.interpretarEscenaVideo).setVisibility(View.VISIBLE);
 
             }else
                 Toast.makeText(this,R.string.no_app,Toast.LENGTH_SHORT).show();
         }
+
     }
     //Cuando se haga startActivityForResult o se cancele, se llamara al siguiente metodo.Este metodo
     //Indicara si se ha grabado bien y el path/nombre del video.
@@ -198,6 +162,34 @@ public class InterpretarescenaActivity  extends AppCompatActivity{
             //si no, se reproduce otro video
             makeVideo();
         }
+
+    }
+    public void verVideo(View view){
+
+        File mediaFile =
+                new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                        + "/myvideo.mp4");
+
+
+        VideoView video= (VideoView)findViewById(R.id.VideoTest);
+
+        video.setVideoURI(Uri.fromFile(mediaFile));
+        MediaController mediacontroller = new MediaController(this) {
+            @Override
+            public void hide(){
+
+            }
+
+            @Override
+            public boolean dispatchKeyEvent(KeyEvent event){
+                if(event.getKeyCode()==KeyEvent.KEYCODE_BACK)
+                    finish();
+                return super.dispatchKeyEvent(event);
+            }
+        };
+
+        mediacontroller.setAnchorView(video);
+        video.setMediaController(mediacontroller);
 
     }
 }

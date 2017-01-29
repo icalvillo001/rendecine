@@ -26,12 +26,20 @@
         android:id="@+id/button_siguienteInterpretarE"
         android:onClick="siguienteInterpretarE"/>
 
-
-
-  <!--  <VideoView
+    <Button
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/interpretarEscenaVideo"/>-->
+        android:layout_height="wrap_content"
+        android:text="@string/grabacion"
+        android:id="@+id/button"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.28" />
+
+    <VideoView
+        android:layout_width="match_parent"
+        android:visibility="visible"
+        android:layout_height="167dp"
+        android:onClick="verVideo"
+        android:id="@+id/interpretarEscenaVideo"/>
 
 
 </LinearLayout>

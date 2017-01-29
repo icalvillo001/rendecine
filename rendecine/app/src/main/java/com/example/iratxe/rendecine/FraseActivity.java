@@ -215,6 +215,7 @@ public class FraseActivity extends AppCompatActivity {
             irPrincipal();
         }else{
             findViewById(R.id.button_siguienteFrase).setVisibility(View.INVISIBLE);
+            findViewById(R.id.button_corregirFrase).setVisibility(View.INVISIBLE);
             mostrarDatos();
 
         }

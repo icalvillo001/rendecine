@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.iratxe.rendecine.model.Autenticacion;
 import com.example.iratxe.rendecine.model.Usuarios;
 
 
@@ -28,8 +27,6 @@ public class InicioActivity  extends AppCompatActivity {
 
 
     RestClient rest= new RestClient("http://u017633.ehu.eus:28080/rendecineBD/rest/Rendecine");
-
-    Usuarios usuarios = new Usuarios();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,11 +50,10 @@ public class InicioActivity  extends AppCompatActivity {
     }
     public void authenticate(final String login,final String passwd) {
 
-        new Autenticacion().execute()
-
-       /* new AsyncTask<Void,Void,Void>() {
+        new AsyncTask<Void,Void,Usuarios>() {
             @Override
-            protected Void doInBackground(Void... voids) {
+            protected Usuarios doInBackground(Void... voids) {
+                Usuarios usuarios = new Usuarios();
                 try{
 
                     JSONObject json = rest.getJSON(String.format("requestLogin?nombre=%s&password=%s", login,passwd));
@@ -81,11 +77,11 @@ public class InicioActivity  extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                return null;
+                return usuarios;
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
+            protected void onPostExecute(Usuarios usuarios) {
                 for(int i=0; i<usuarios.getUsuarios().size();i++)
                 {
                     if(login.equals(usuarios.getUsuarios().get(i).getNombre())){
@@ -116,8 +112,8 @@ public class InicioActivity  extends AppCompatActivity {
                 }
 
 
-                super.onPostExecute(aVoid);
+                //super.onPostExecute(usuarios);
             }
-        }.execute();*/
+        }.execute();
     }
 }

@@ -25,13 +25,7 @@
 
     </RadioGroup>
 
-    <Button
-        android:id="@+id/button_siguiente"
-        android:visibility="invisible"
-        android:text="@string/siguiente"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="siguiente"/>
+
     <Button
         android:id="@+id/button_corregir"
         android:visibility="invisible"
@@ -39,6 +33,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="corregir"/>
+    <Button
+        android:id="@+id/button_siguiente"
+        android:visibility="invisible"
+        android:text="@string/siguiente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="siguiente"/>
 
 
 

@@ -23,7 +23,7 @@ import java.io.IOException;
 public class RegistroActivity extends AppCompatActivity {
 
 
-    Usuarios usuarios = new Usuarios();
+    //Usuarios usuarios = new Usuarios();
     RestClient rest = new RestClient("http://u017633.ehu.eus:28080/rendecineBD/rest/Rendecine");
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +52,8 @@ public class RegistroActivity extends AppCompatActivity {
         }
     }
 
-    public void consultarDatos(String login , String passwd) {
-
+    public Usuarios consultarDatos(String login , String passwd) {
+        Usuarios usuarios = new Usuarios();
 
         try {
 
@@ -79,12 +79,11 @@ public class RegistroActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
+        return usuarios;
     }
 
 
-    public boolean guardarDatos(String login, String passwd, String email) {
+    public boolean guardarDatos(String login, String passwd, String email, Usuarios usuarios) {
         boolean comp = false;
 
         //Se comprueba si existe o no el usuario
@@ -126,11 +125,12 @@ public class RegistroActivity extends AppCompatActivity {
             @Override
             protected Boolean doInBackground(Void... voids) {
                 boolean comp = false;
+                Usuarios usuarios;
                 //Se consulta el nombre
-                consultarDatos(login, passwd);
+                usuarios=consultarDatos(login, passwd);
                 //Se guarda el nombre si no existe y devuelve true
                 //No se guarda si existe y devuelve false
-                comp = guardarDatos(login, passwd, email);
+                comp = guardarDatos(login, passwd, email,usuarios);
                 return comp;
             }
 

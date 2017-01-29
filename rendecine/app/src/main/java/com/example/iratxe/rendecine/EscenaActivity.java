@@ -227,6 +227,7 @@ public class EscenaActivity extends AppCompatActivity {
             irPrincipalEscena();
         }else{
             findViewById(R.id.button_siguiente).setVisibility(View.INVISIBLE);
+            findViewById(R.id.button_corregir).setVisibility(View.INVISIBLE);
             mostrarDatosEscena();
 
         }
