@@ -12,35 +12,19 @@
         android:text="@string/preguntaEscena"
         android:textSize="20dp" />
 
- <!--   <RadioGroup
+    <VideoView
+        android:layout_width="match_parent"
+        android:layout_height="178dp"
+        android:id="@+id/VideoTest"/>
+
+
+    <RadioGroup
         android:id="@+id/escena_choices"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"></RadioGroup>-->
-<RadioGroup
-    android:id="@+id/escena_choices"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <RadioButton
-        android:id="@+id/radio1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    <RadioButton
-        android:id="@+id/radio2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    <RadioButton
-        android:id="@+id/radio3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    <Button
-        android:id="@+id/button_corregir"
-        android:visibility="invisible"
-        android:text="@string/corregir"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="corregir"/>
-</RadioGroup>
+        android:layout_height="123dp">
+
+    </RadioGroup>
+
     <Button
         android:id="@+id/button_siguiente"
         android:visibility="invisible"
@@ -48,10 +32,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="siguiente"/>
-
-    <VideoView
+    <Button
+        android:id="@+id/button_corregir"
+        android:visibility="invisible"
+        android:text="@string/corregir"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/VideoTest"/>
+        android:layout_height="wrap_content"
+        android:onClick="corregir"/>
+
+
 
 </LinearLayout>

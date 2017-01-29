@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.iratxe.rendecine.model.Autenticacion;
 import com.example.iratxe.rendecine.model.Usuarios;
 
 
@@ -52,7 +53,9 @@ public class InicioActivity  extends AppCompatActivity {
     }
     public void authenticate(final String login,final String passwd) {
 
-        new AsyncTask<Void,Void,Void>() {
+        new Autenticacion().execute()
+
+       /* new AsyncTask<Void,Void,Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
                 try{
@@ -71,8 +74,6 @@ public class InicioActivity  extends AppCompatActivity {
 
                         usuarios.getUsuarios().add(usuario);
                     }
-                    Intent intent=new Intent(InicioActivity.this,PrincipalActivity.class);
-                    startActivity(intent);
 
                 }catch (JSONException e){
                     e.printStackTrace();
@@ -117,6 +118,6 @@ public class InicioActivity  extends AppCompatActivity {
 
                 super.onPostExecute(aVoid);
             }
-        }.execute();
+        }.execute();*/
     }
 }

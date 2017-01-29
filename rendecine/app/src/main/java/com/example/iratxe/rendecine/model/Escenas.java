@@ -20,20 +20,14 @@ public class Escenas {
 
     public static class Escena {
 
-        public int idEscena;
+
         public String opc1;
         public String opc2;
         public String opc3;
         public String sol;
         public String srcVideo;
 
-        public int getIdEscena() {
-            return idEscena;
-        }
 
-        public void setIdEscena(int idEscena) {
-            this.idEscena = idEscena;
-        }
 
         public String getOpc1() {
             return opc1;

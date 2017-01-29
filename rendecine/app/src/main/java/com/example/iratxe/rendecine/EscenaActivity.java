@@ -15,6 +15,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.iratxe.rendecine.model.Escenas;
+import com.example.iratxe.rendecine.model.Frases;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,45 +28,46 @@ import java.io.IOException;
  */
 public class EscenaActivity extends AppCompatActivity {
 
-    public static String[] preguntas = {"Gladiator", "300", "Peter Pan","http://u017633.ehu.eus:28080/static/ServidorTta/AndroidManifest.mp4","0","Lavida es bella"," La vida es bella","La vida es bella","http://u017633.ehu.eus:28080/static/ServidorTta/AndroidManifest.mp4","1"};
-    String[] advise={"http://u017633.ehu.eus:28080/static/ServidorTta/AndroidManifest.mp4"};
-    RestClient rest = new RestClient("http://u017633.ehu.eus:28080/RendecineBD/rest/rendecine");
-    final Escenas escena = new Escenas();
-    final Escenas.Escena escena1 = new Escenas.Escena();
+
+    RestClient rest= new RestClient("http://u017633.ehu.eus:28080/rendecineBD/rest/Rendecine");
+    Escenas escenas = new Escenas();
+    int posEscena =0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_escena);
-        cargarVideo();
-        makeTest();
+        cargarDatosEscena();
     }
 
-    public void cargarTest(){
+    public void cargarDatosEscena(){
+
+        //Llamada al servidor para que coja la lista con las imagenes y opciones del test.
         new AsyncTask<Void,Void,Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
                 try{
-                   // String login="12345678A";
-                    //String passwd="tta";
-                    //rest.setHttpBasicAuth(login,passwd);
 
+                    JSONObject json = rest.getJSON(String.format("requestEscenas"));
 
-                    //Se solicita los datos del test al servidor
-                    JSONObject json = rest.getJSON(String.format("requestEscena"));
-
-                    //Se coge las diferentes opciones y los datos necesarios
+                    //Se coge las diferentes opciones y los datos necesario
                     JSONArray array = json.getJSONArray("escena");
-                    for(int i=0;i<array.length();i++){
+                    for(int i=0;i<array.length();i++) {
                         JSONObject itemJSON = array.getJSONObject(i);
-                        escena1.setIdEscena(itemJSON.getInt("idEscena"));
-                        escena1.setOpc1(itemJSON.getString("opc1"));
-                        escena1.setOpc2(itemJSON.getString("opc2"));
-                        escena1.setOpc3(itemJSON.getString("opc3"));
-                        escena1.setSol(itemJSON.getString("sol"));
-                        escena1.setSrcVideo(itemJSON.getString("srcVideo"));
-                        escena.getEscenaList().add(escena1);
+
+                        Escenas.Escena escena = new Escenas.Escena();
+
+                        escena.setSrcVideo(itemJSON.getString("srcVideo"));
+                        escena.setOpc1(itemJSON.getString("opc1"));
+                        escena.setOpc2(itemJSON.getString("opc2"));
+                        escena.setOpc3(itemJSON.getString("opc3"));
+                        escena.setSol(itemJSON.getString("sol"));
+
+                        escenas.getEscenaList().add(escena);
+
                     }
+
                 }catch (JSONException e){
                     e.printStackTrace();
                 }catch (IOException e){
@@ -77,44 +79,71 @@ public class EscenaActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                cargarVideo();
-                makeTest();
+                mostrarDatosEscena();
                 super.onPostExecute(aVoid);
             }
         }.execute();
+
+
     }
 
+    public void mostrarDatosEscena(){
 
-    public void makeTest() {
+        cargarVideo();
 
-        //Se visualiza el enunciado del test
-        RadioButton radio1=(RadioButton)findViewById(R.id.radio1);
-        radio1.setText(escena.getEscenaList().get(0).getOpc1());
+        RadioGroup group = (RadioGroup) findViewById(R.id.escena_choices);
+
+        int id=0;
+
+        RadioButton radio = new RadioButton(this);
+        radio.setText(escenas.getEscenaList().get(posEscena).getOpc1());
+        radio.setId(id);
+        radio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                findViewById(R.id.button_corregir).setVisibility(View.VISIBLE);
+            }
+        });
+        group.addView(radio);
+
+        RadioButton radio1 = new RadioButton(this);
+        radio1.setText(escenas.getEscenaList().get(posEscena).getOpc2());
+        radio1.setId(id+1);
         radio1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 findViewById(R.id.button_corregir).setVisibility(View.VISIBLE);
             }
         });
-        RadioButton radio2=(RadioButton)findViewById(R.id.radio2);
-        radio2.setText(escena.getEscenaList().get(1).getOpc2());
+        group.addView(radio1);
+
+        RadioButton radio2 = new RadioButton(this);
+        radio2.setText(escenas.getEscenaList().get(posEscena).getOpc3());
+        radio2.setId(id+2);
         radio2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 findViewById(R.id.button_corregir).setVisibility(View.VISIBLE);
             }
         });
-        RadioButton radio3=(RadioButton)findViewById(R.id.radio3);
-        radio3.setText(escena.getEscenaList().get(2).getOpc3());
-        radio3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                findViewById(R.id.button_corregir).setVisibility(View.VISIBLE);
-            }
-        });
+        group.addView(radio2);
+
+
+
+
+
+
+
+
+
+
+
+        posEscena++;
+
+
     }
 
-    int videoPosicion=0;
+
     public void cargarVideo(){
 
        // VideoView video =new VideoView(this);
@@ -123,8 +152,8 @@ public class EscenaActivity extends AppCompatActivity {
         //video.setId(0);
         //video.setVideoURI(Uri.parse(advise[0]));
        // video.setVideoURI(Uri.parse(preguntas[videoPosicion]));
-        video.setVideoURI(Uri.parse(escena.getEscenaList().get(0).getSrcVideo()));
-        videoPosicion=videoPosicion+1;
+        video.setVideoURI(Uri.parse(escenas.getEscenaList().get(posEscena).getSrcVideo()));
+
 
         MediaController mediacontroller = new MediaController(this) {
             @Override
@@ -148,18 +177,31 @@ public class EscenaActivity extends AppCompatActivity {
        // layout.addView(video);
 
     }
-    int posicionCorrecta=4;
+    public int comprobarCorrecta() {
+
+        int correcta = 0;
+
+        if (escenas.getEscenaList().get(posEscena - 1).getOpc1().equals(escenas.getEscenaList().get(posEscena - 1).getSol())) {
+            correcta = 0;
+        } else if (escenas.getEscenaList().get(posEscena - 1).getOpc2().equals(escenas.getEscenaList().get(posEscena - 1).getSol())) {
+            correcta = 1;
+        } else {
+            correcta = 2;
+        }
+        return correcta;
+    }
     public void corregir(View view){
+
         RadioGroup group = (RadioGroup)findViewById(R.id.escena_choices);
+
         int choices = group.getChildCount();
         for(int i=0;i<choices;i++)
             group.getChildAt(i).setEnabled(false);
 
         findViewById(R.id.button_siguiente).setVisibility(View.VISIBLE);
 
-        int f= Integer.parseInt(preguntas[posicionCorrecta]);
-        posicionCorrecta=posicionCorrecta+5;
-        group.getChildAt(f).setBackgroundColor(Color.GREEN);
+        int correcta=comprobarCorrecta();
+        group.getChildAt(correcta).setBackgroundColor(Color.GREEN);
 
         if( group.getCheckedRadioButtonId()==-1){
             Toast.makeText(this,
@@ -167,7 +209,7 @@ public class EscenaActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT);
         }else{
             int select= group.getCheckedRadioButtonId();
-            if(select!=f){
+            if(select!=correcta){
                 group.getChildAt(select).setBackgroundColor(Color.RED);
             }else{
                 Toast.makeText(this,
@@ -181,12 +223,12 @@ public class EscenaActivity extends AppCompatActivity {
         RadioGroup group = (RadioGroup) findViewById(R.id.escena_choices);
         group.removeAllViews();
 
-        if((escena.getEscenaList().size())==preguntas.length){
+        if((escenas.getEscenaList().size())==posEscena){
             irPrincipalEscena();
         }else{
             findViewById(R.id.button_siguiente).setVisibility(View.INVISIBLE);
-            cargarVideo();
-            makeTest();
+            mostrarDatosEscena();
+
         }
     }
 

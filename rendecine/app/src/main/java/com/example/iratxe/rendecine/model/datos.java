@@ -50,12 +50,12 @@ public class datos extends AsyncTask<Void,Void,Interpretar>{
             e.printStackTrace();
         }
         return interp;
-      //  return null;
+
     }
 
 
     protected void onPostExecute(Interpretar interp) {
-        //makeVideo();
+
         super.onPostExecute(interp);
 
     }

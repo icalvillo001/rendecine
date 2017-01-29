@@ -1,11 +1,14 @@
 package com.example.iratxe.rendecine;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -14,7 +17,14 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.iratxe.rendecine.model.Frases;
+import com.example.iratxe.rendecine.model.Usuarios;
+import com.example.iratxe.rendecine.model.datos;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -22,6 +32,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by aitor on 4/01/17.
@@ -29,101 +40,141 @@ import java.net.URL;
 public class FraseActivity extends AppCompatActivity {
 
     public static String[] preguntasImagen={"La vida es bella","Peter Pan","300","0","El señor de los anillos","El libro de la selva","Siete almas","1"};
-    ImageView image;
+    RestClient rest= new RestClient("http://u017633.ehu.eus:28080/rendecineBD/rest/Rendecine");
+    ImageView image1;
+    Frases frases = new Frases();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_frase);
-        image=(ImageView)findViewById(R.id.imagenFrase);
-        //cargarImagen();
-        cargarImagen();
-      //  new DownloadImageTask((ImageView)findViewById(R.id.imagenFrase)).execute("http://dl.dropboxusercontent.com/s/al2ce7eox2o4hwi/300.jpg");
-        makeTestImagen();
+        image1=(ImageView)findViewById(R.id.imagenFrase);
+
+        cargarDatos();
+
     }
 
-    public void cargarImagen2(){
-      /*      new Thread(new Runnable() {
-                @Override
-              public void run() {
-                try {
-                        InputStream is=(InputStream)new URL("http://dl.dropboxusercontent.com/s/al2ce7eox2o4hwi/300.jpg").getContent();
-                        final Bitmap bitmap = BitmapFactory.decodeStream(is);
-                        is.reset();
+   public void cargarDatos(){
 
-                        image.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                image.setImageBitmap(bitmap);
-                            }
-                        });
-                    } catch (MalformedURLException e){
-                    e.printStackTrace();
-                }
-                catch (IOException e){
-                    e.printStackTrace();
-                }
-                }
-            }).start();*/
-        Picasso
-                .with(this)
-                .load("http://dl.dropboxusercontent.com/s/al2ce7eox2o4hwi/300.jpg")
-                .into(image);
-    }
-   public void cargarImagen(){
+       //Llamada al servidor para que coja la lista con las imagenes y opciones del test.
+       new AsyncTask<Void,Void,Void>() {
+           @Override
+           protected Void doInBackground(Void... voids) {
+               try{
 
-      // Drawable drawable=this.getResources().getDrawable(R.drawable.castellano);
-      // Drawable drawable;
-      // drawable=LoadImageFromWebOperations("http://dl.dropboxusercontent.com/s/al2ce7eox2o4hwi/300.jpg");
-       /*try{
-           String url="http://dl.dropboxusercontent.com/s/al2ce7eox2o4hwi/300.jpg";
-           InputStream is = (InputStream) new URL(url).getContent();
-           Bitmap b= BitmapFactory.decodeStream(is);
+                   JSONObject json = rest.getJSON(String.format("requestFrase"));
 
-            ImageView image=(ImageView)findViewById(R.id.imagenFrase);
-           image.setImageBitmap(b);
-         // image.setImageDrawable(drawable);
-       }catch (MalformedURLException e){
-           e.printStackTrace();
-       }catch (IOException e){
-           e.printStackTrace();
-       }*/
-      /* Picasso
-               .with(this)
-               .load("http://dl.dropboxusercontent.com/s/al2ce7eox2o4hwi/300.jpg")
-               .into(image);*/
-       ImageView image=(ImageView)findViewById(R.id.imagenFrase);
-       Drawable drawable=this.getResources().getDrawable(R.drawable.castellano);
-        //image.setImageURI(Uri.parse("http://dl.dropboxusercontent.com/s/al2ce7eox2o4hwi/300.jpg"));
-       image.setImageDrawable(drawable);
+                   //Se coge las diferentes opciones y los datos necesario
+                   JSONArray array = json.getJSONArray("frase");
+                   for(int i=0;i<array.length();i++) {
+                       JSONObject itemJSON = array.getJSONObject(i);
+
+                       Frases.Frase frase = new Frases.Frase();
+
+                       frase.setSrcImg(itemJSON.getString("srcImg"));
+                       frase.setOpc1(itemJSON.getString("opc1"));
+                       frase.setOpc2(itemJSON.getString("opc2"));
+                       frase.setOpc3(itemJSON.getString("opc3"));
+                       frase.setSol(itemJSON.getString("sol"));
+
+                       frases.getFraseList().add(frase);
+
+                   }
+
+               }catch (JSONException e){
+                   e.printStackTrace();
+               }catch (IOException e){
+                   e.printStackTrace();
+               }
+
+               return null;
+           }
+
+           @Override
+           protected void onPostExecute(Void aVoid) {
+               mostrarDatos();
+               super.onPostExecute(aVoid);
+           }
+       }.execute();
+
 
     }
     int posFrase=0;
+    public void mostrarDatos(){
+        try{
 
-    public void makeTestImagen(){
 
-        RadioGroup group = (RadioGroup) findViewById(R.id.frase_choices);
-        int id=0;
-        for (int a=posFrase; a<posFrase+3; a++) {
+            DownloadImageTask d=new DownloadImageTask();
+            image1.setImageBitmap(d.execute(frases.getFraseList().get(posFrase).getSrcImg()).get());
+
+            RadioGroup group = (RadioGroup) findViewById(R.id.frase_choices);
+
             RadioButton radio = new RadioButton(this);
+            RadioButton radio1 = new RadioButton(this);
+            RadioButton radio2 = new RadioButton(this);
+
+            int id=0;
+            radio.setText(frases.getFraseList().get(posFrase).getOpc1());
             radio.setId(id);
-            id=id+1;
-            radio.setText(preguntasImagen[a]);
+
+            radio1.setText(frases.getFraseList().get(posFrase).getOpc2());
+            radio1.setId(id+1);
+
+            radio2.setText(frases.getFraseList().get(posFrase).getOpc3());
+            radio2.setId(id+2);
+
+
             radio.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     findViewById(R.id.button_corregirFrase).setVisibility(View.VISIBLE);
                 }
             });
+
+            radio1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    findViewById(R.id.button_corregirFrase).setVisibility(View.VISIBLE);
+                }
+            });
+
+            radio2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    findViewById(R.id.button_corregirFrase).setVisibility(View.VISIBLE);
+                }
+            });
+
             group.addView(radio);
+            group.addView(radio1);
+            group.addView(radio2);
 
+            posFrase++;
 
+        }catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }catch (ExecutionException e){
+            e.printStackTrace();
         }
-        posFrase=posFrase+4;
     }
 
-    int posicionCorrecta=3;
+    public int comprobarCorrecta(){
+
+        int correcta=0;
+
+        if(frases.getFraseList().get(posFrase-1).getOpc1().equals(frases.getFraseList().get(posFrase-1).getSol())){
+            correcta=0;
+        }else if (frases.getFraseList().get(posFrase-1).getOpc2().equals(frases.getFraseList().get(posFrase-1).getSol())){
+            correcta=1;
+        }else{
+            correcta=2;
+        }
+        return correcta;
+    }
 
     public void corregirImagen(View view){
+
+        int posicionCorrecta=comprobarCorrecta();
 
         RadioGroup group = (RadioGroup)findViewById(R.id.frase_choices);
         int choices = group.getChildCount();
@@ -132,9 +183,7 @@ public class FraseActivity extends AppCompatActivity {
 
         findViewById(R.id.button_siguienteFrase).setVisibility(View.VISIBLE);
 
-        int f= Integer.parseInt(preguntasImagen[posicionCorrecta]);
-        posicionCorrecta=posicionCorrecta+4;
-        group.getChildAt(f).setBackgroundColor(Color.GREEN);
+        group.getChildAt(posicionCorrecta).setBackgroundColor(Color.GREEN);
 
         if( group.getCheckedRadioButtonId()==-1){
             Toast.makeText(this,
@@ -142,7 +191,8 @@ public class FraseActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT);
         }else{
             int select= group.getCheckedRadioButtonId();
-            if(select!=f){
+
+            if(select!=posicionCorrecta){
                 group.getChildAt(select).setBackgroundColor(Color.RED);
             }else{
                 Toast.makeText(this,
@@ -158,12 +208,15 @@ public class FraseActivity extends AppCompatActivity {
         RadioGroup group = (RadioGroup) findViewById(R.id.frase_choices);
         group.removeAllViews();
 
-        if((posFrase)==preguntasImagen.length){
+        if(posFrase==frases.getFraseList().size()){
+            Toast.makeText(this,
+                    "Juego acabado!",
+                    Toast.LENGTH_SHORT);
             irPrincipal();
         }else{
             findViewById(R.id.button_siguienteFrase).setVisibility(View.INVISIBLE);
-            cargarImagen2();
-            makeTestImagen();
+            mostrarDatos();
+
         }
     }
 
