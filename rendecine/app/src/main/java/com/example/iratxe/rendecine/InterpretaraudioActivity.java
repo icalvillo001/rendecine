@@ -10,6 +10,8 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -23,6 +25,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -42,6 +45,7 @@ public class InterpretaraudioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interpretaraudio);
         enlaceVideo();
+        Button button;
 
     }
     int videoPosicion=0;
@@ -49,7 +53,7 @@ public class InterpretaraudioActivity extends AppCompatActivity {
 
         VideoView video= (VideoView)findViewById(R.id.interpretarAudio);
 
-        video.setVideoURI(Uri.parse(interpretar.getInterList().get(videoPosicion).getSrcVideo()));
+               video.setVideoURI(Uri.parse(interpretar.getInterList().get(videoPosicion).getSrcVideo()));
         videoPosicion++;
 
         MediaController mediacontroller = new MediaController(this) {
@@ -91,20 +95,15 @@ public class InterpretaraudioActivity extends AppCompatActivity {
         if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_MICROPHONE))
             Toast.makeText(this,R.string.no_micro,Toast.LENGTH_SHORT).show();
         else{
-            //Defino el nombre del video y el path a guardar
-            File mediaFile =
-                    new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                            + "/myrecord.mp4");
-
-            //Lanzo vel intent
             Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+            if(intent.resolveActivity(getPackageManager())!=null){
 
-            if(intent.resolveActivity(getPackageManager())!=null) {
-                Uri audioUri = Uri.fromFile(mediaFile);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, audioUri);
-                startActivityForResult(intent, AUDIO_REQUEST_CODE);
-            }else
+                startActivityForResult(intent,AUDIO_REQUEST_CODE);
+            }
+
+            else
                 Toast.makeText(this,R.string.no_app,Toast.LENGTH_SHORT).show();
+
         }
     }
 
@@ -114,20 +113,57 @@ public class InterpretaraudioActivity extends AppCompatActivity {
             Intent intent=new Intent(this,PrincipalActivity.class);
             startActivity(intent);
         }else{
+            findViewById(R.id.reproducirAudio).setVisibility(View.INVISIBLE);
+            findViewById(R.id.audio).setVisibility(View.INVISIBLE);
+            LinearLayout layout=(LinearLayout)findViewById(R.id.audio);
+            layout.removeAllViews();
             makeInterpretarAudio();
         }
 
     }
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+    public void reproducir(Intent data){
+        View audio=new View(this);
+        Uri url = data.getData();
+
+        AudioPlayer audioPlayer=new AudioPlayer(audio);
+        try {
+            audioPlayer.setAudioUri(url);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        LinearLayout layout=(LinearLayout)findViewById(R.id.audio);
+        layout.addView(audio);
+    }
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         if (requestCode == AUDIO_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(this, "Video saved to:\n" +
+
+                findViewById(R.id.reproducirAudio).setVisibility(View.VISIBLE);
+
+                Toast.makeText(this, "Audio saved to:\n" +
                         data.getData(), Toast.LENGTH_LONG).show();
+                Button b= (Button)findViewById(R.id.reproducirAudio);
+
+
+                b.setOnClickListener( new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view) {
+                        reproducir(data);
+                    }
+                });
+
+
+
+
+
             } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(this, "Video recording cancelled.",
+                Toast.makeText(this, "Audio recording cancelled.",
                         Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(this, "Failed to record video",
+                Toast.makeText(this, "Failed to record audio",
                         Toast.LENGTH_LONG).show();
             }
         }

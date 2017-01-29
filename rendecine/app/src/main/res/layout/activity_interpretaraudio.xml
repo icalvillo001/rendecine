@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/audioLayout"
     tools:context="com.example.iratxe.rendecine.InterpretaraudioActivity">
 
     <VideoView
@@ -24,6 +25,21 @@
         android:text="@string/siguiente"
         android:id="@+id/button_siguienteInterpretarA"
         android:onClick="siguienteInterpretarA"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="reproducir"
+        android:visibility="invisible"
+        android:id="@+id/reproducirAudio"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="174dp"
+        android:visibility="invisible"
+        android:orientation="vertical"
+        android:id="@+id/audio">
+    </LinearLayout>
+
 
 
 </LinearLayout>

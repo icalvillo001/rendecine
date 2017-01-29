@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -99,13 +100,7 @@ public class InterpretarescenaActivity  extends AppCompatActivity{
 
     public void grabarVideo(View view){
 
-        //El videose guardara en un path por defecto
-        //con nombre tambien por defecto
-        //Quiero que se guarde en un path concreto con un nombre concreto para luego poder reproducir el video
-        //Defino el nombre del video y el path a guardar
-        File mediaFile =
-                new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                        + "/myvideo.mp4");
+
 
         //Se verifica que hay una camara en el dispositivo
         if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA))
@@ -117,11 +112,9 @@ public class InterpretarescenaActivity  extends AppCompatActivity{
             Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 
             if(intent.resolveActivity(getPackageManager())!=null) {
-                //Si hay camara, se pasa el path y nombre de archivo
-                Uri videoUri = Uri.fromFile(mediaFile);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, videoUri);
+
                 startActivityForResult(intent, VIDEO_REQUEST_CODE);
-                findViewById(R.id.interpretarEscenaVideo).setVisibility(View.VISIBLE);
+
 
             }else
                 Toast.makeText(this,R.string.no_app,Toast.LENGTH_SHORT).show();
@@ -130,11 +123,23 @@ public class InterpretarescenaActivity  extends AppCompatActivity{
     }
     //Cuando se haga startActivityForResult o se cancele, se llamara al siguiente metodo.Este metodo
     //Indicara si se ha grabado bien y el path/nombre del video.
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         if (requestCode == VIDEO_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
+
+                findViewById(R.id.verGrabacion).setVisibility(View.VISIBLE);
+                Button button = (Button)findViewById(R.id.verGrabacion);
+                button.setOnClickListener( new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view) {
+                        reproducir(data);
+                    }
+                });
+
+
                 Toast.makeText(this, "Video saved to:\n" +
                         data.getData(), Toast.LENGTH_LONG).show();
+
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "Video recording cancelled.",
                         Toast.LENGTH_LONG).show();
@@ -144,7 +149,29 @@ public class InterpretarescenaActivity  extends AppCompatActivity{
             }
         }
     }
+    public void reproducir(Intent data){
+        findViewById(R.id.interpretarEscenaVideo).setVisibility(View.VISIBLE);
+        VideoView escena = (VideoView)findViewById(R.id.interpretarEscenaVideo);
+        Uri url = data.getData();
+        escena.setVideoURI(url);
 
+        //Se define el media controller
+        MediaController mediacontroller = new MediaController(this) {
+            @Override
+            public void hide(){
+
+            }
+
+            @Override
+            public boolean dispatchKeyEvent(KeyEvent event){
+                if(event.getKeyCode()==KeyEvent.KEYCODE_BACK)
+                    finish();
+                return super.dispatchKeyEvent(event);
+            }
+        };
+        mediacontroller.setAnchorView(escena);
+        escena.setMediaController(mediacontroller);
+    }
     //Metodo que ira avanzando en los videos
     public void siguienteInterpretarE(View view){
 
@@ -160,6 +187,8 @@ public class InterpretarescenaActivity  extends AppCompatActivity{
             startActivity(intent);
         }else{
             //si no, se reproduce otro video
+            findViewById(R.id.verGrabacion).setVisibility(View.INVISIBLE);
+            findViewById(R.id.interpretarEscenaVideo).setVisibility(View.INVISIBLE);
             makeVideo();
         }
 

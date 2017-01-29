@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         }else{
 
-
+            //It selects a new locale from the language string that was passed in, and then updates the app’s resource files.
             Locale locale = new Locale("eu");
             Locale.setDefault(locale);
 

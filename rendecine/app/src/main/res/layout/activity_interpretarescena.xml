@@ -30,13 +30,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/grabacion"
-        android:id="@+id/button"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.28" />
+        android:visibility="invisible"
+        android:id="@+id/verGrabacion"
+        android:layout_gravity="center_horizontal" />
 
     <VideoView
         android:layout_width="match_parent"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:layout_height="167dp"
         android:onClick="verVideo"
         android:id="@+id/interpretarEscenaVideo"/>
