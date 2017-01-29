@@ -17,18 +17,16 @@ import java.io.IOException;
 public class datos extends AsyncTask<Void,Void,Interpretar>{
 
     RestClient rest= new RestClient("http://u017633.ehu.eus:28080/rendecineBD/rest/Rendecine");
-    Interpretar interpretar;
-
-    public datos (Interpretar interpretar){
-        this.interpretar=interpretar;
-    }
 
 
     @Override
     protected Interpretar doInBackground(Void... voids) {
+
+        Interpretar interp = new Interpretar();
+
         try{
 
-            Interpretar interp = new Interpretar();
+
             //Se hace la peticion al servidor
             JSONObject json = rest.getJSON(String.format("requestInter"));
 
@@ -44,21 +42,22 @@ public class datos extends AsyncTask<Void,Void,Interpretar>{
                 //Se añaden los videos a la lista que se utiliza en el metodo makeVideo para visualizar
                 interp.getInterList().add(inter);
             }
-        return interp;
+
 
         }catch (JSONException e){
             e.printStackTrace();
         }catch (IOException e){
             e.printStackTrace();
         }
-
-        return null;
+        return interp;
+      //  return null;
     }
 
 
     protected void onPostExecute(Interpretar interp) {
         //makeVideo();
-        interpretar=interp;
+        super.onPostExecute(interp);
+
     }
       ;
 

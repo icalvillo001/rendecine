@@ -15,6 +15,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.iratxe.rendecine.model.Interpretar;
+import com.example.iratxe.rendecine.model.datos;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,6 +23,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by aitor on 5/01/17.
@@ -39,7 +41,6 @@ public class InterpretaraudioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interpretaraudio);
-        //makeInterpretarAudio();
         enlaceVideo();
 
     }
@@ -48,7 +49,6 @@ public class InterpretaraudioActivity extends AppCompatActivity {
 
         VideoView video= (VideoView)findViewById(R.id.interpretarAudio);
 
-        //video.setVideoURI(Uri.parse(videoURL[videoPosicion]));
         video.setVideoURI(Uri.parse(interpretar.getInterList().get(videoPosicion).getSrcVideo()));
         videoPosicion++;
 
@@ -72,44 +72,17 @@ public class InterpretaraudioActivity extends AppCompatActivity {
 
     public void enlaceVideo(){
 
-        new AsyncTask<Void,Void,Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                try{
+        try{
+            datos d = new datos();
+            interpretar= d.execute().get();
+            makeInterpretarAudio();
 
-
-                    //Se hace la peticion al servidor
-                    JSONObject json = rest.getJSON(String.format("requestInter"));
-
-                    //Se coge las diferentes opciones y los datos necesario
-                    JSONArray array = json.getJSONArray("interpretacion");
-                    for(int i=0;i<array.length();i++) {
-                        JSONObject itemJSON = array.getJSONObject(i);
-
-                        Interpretar.inter inter= new Interpretar.inter();
-
-                        inter.setSrcVideo(itemJSON.getString("srcVideo"));
-
-                        //Se añaden los videos a la lista que se utiliza en el metodo makeVideo para visualizar
-                        interpretar.getInterList().add(inter);
-                    }
-
-
-                }catch (JSONException e){
-                    e.printStackTrace();
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                makeInterpretarAudio();
-                super.onPostExecute(aVoid);
-            }
-        }.execute();
+        }catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }catch (ExecutionException e){
+            e.printStackTrace();
+        }
 
 
     }
@@ -137,7 +110,7 @@ public class InterpretaraudioActivity extends AppCompatActivity {
 
     public void siguienteInterpretarA(View view) {
 
-        if(videoPosicion==videoURL.length){
+        if(videoPosicion==interpretar.getInterList().size()){
             Intent intent=new Intent(this,PrincipalActivity.class);
             startActivity(intent);
         }else{

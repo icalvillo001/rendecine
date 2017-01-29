@@ -19,6 +19,7 @@ import android.widget.VideoView;
 
 import com.example.iratxe.rendecine.model.Interpretar;
 import com.example.iratxe.rendecine.model.Usuarios;
+import com.example.iratxe.rendecine.model.datos;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,6 +27,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by aitor on 5/01/17.
@@ -78,7 +80,20 @@ public class InterpretarescenaActivity  extends AppCompatActivity{
 
     public void enlaceVideo(){
 
-        new AsyncTask<Void,Void,Void>() {
+
+        try{
+            datos d = new datos();
+            interpretar= d.execute().get();
+            makeVideo();
+
+        }catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }catch (ExecutionException e){
+            e.printStackTrace();
+        }
+
+       /* new AsyncTask<Void,Void,Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
                 try{
@@ -115,7 +130,7 @@ public class InterpretarescenaActivity  extends AppCompatActivity{
                 makeVideo();
                 super.onPostExecute(aVoid);
             }
-        }.execute();
+        }.execute();*/
 
 
     }
