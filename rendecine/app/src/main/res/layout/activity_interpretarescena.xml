@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.iratxe.rendecine.InterpretarescenaActivity"
+    tools:context=".presentador.InterpretarescenaActivity"
     android:weightSum="1">
 
     <VideoView
@@ -19,13 +19,7 @@
         android:id="@+id/botonGrabarvideo"
         android:onClick="grabarVideo"/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/siguiente"
-        android:visibility="invisible"
-        android:id="@+id/button_siguienteInterpretarE"
-        android:onClick="siguienteInterpretarE"/>
+
 
     <Button
         android:layout_width="match_parent"
@@ -34,6 +28,14 @@
         android:visibility="invisible"
         android:id="@+id/verGrabacion"
         android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/siguiente"
+        android:visibility="invisible"
+        android:id="@+id/button_siguienteInterpretarE"
+        android:onClick="siguienteInterpretarE"/>
 
     <VideoView
         android:layout_width="match_parent"

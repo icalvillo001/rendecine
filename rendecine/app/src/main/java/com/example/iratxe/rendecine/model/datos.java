@@ -1,9 +1,6 @@
 package com.example.iratxe.rendecine.model;
 
 import android.os.AsyncTask;
-import android.widget.ImageView;
-
-import com.example.iratxe.rendecine.RestClient;
 
 import org.json.JSONArray;
 import org.json.JSONException;

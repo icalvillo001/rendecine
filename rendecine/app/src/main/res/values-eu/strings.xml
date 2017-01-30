@@ -11,9 +11,9 @@
     <string name="obras">Literaturari egokitutako lanak</string>
     <string name="juegos">Jokuak</string>
     <string name="foro">Foru</string>
-    <string name="fraseJuego"></string>
+    <string name="fraseJuego">     </string>
     <string name="adivinaEscena">Eszena ikusiz filma...</string>
-    <string name="fraseObra"></string>
+    <string name="fraseObra">      </string>
     <string name="interpretarEscena">Eszena interpretatzen...</string>
     <string name="interpretarAudio">Eszena tolesten...</string>
     <string name="corregir">zuzentzea</string>
@@ -33,5 +33,6 @@
     <string name="usuario">Erabiltzaile-izena</string>
     <string name="euskeraEscena">...jakingo zenuke?</string>
     <string name="euskeraObra">...igartzen jakingo zenuke?</string>
+
 
 </resources>

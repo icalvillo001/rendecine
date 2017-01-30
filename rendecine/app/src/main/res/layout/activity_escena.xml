@@ -4,7 +4,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/escenaLayout"
-    tools:context="com.example.iratxe.rendecine.EscenaActivity">
+    tools:context=".presentador.EscenaActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -39,7 +39,8 @@
         android:text="@string/siguiente"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="siguiente"/>
+        android:onClick="siguiente"
+        />
 
 
 
