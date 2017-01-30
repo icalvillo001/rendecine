@@ -76,7 +76,7 @@ public class AudioPlayer implements MediaController.MediaPlayerControl, MediaPla
 
     @Override
     public boolean canPause() {
-        return false;
+        return true;
     }
 
     @Override
@@ -112,6 +112,10 @@ public class AudioPlayer implements MediaController.MediaPlayerControl, MediaPla
     @Override
     public int getAudioSessionId() {
         return 0;
+    }
+
+    public void quitar(){
+        controller.hide();
     }
 }
 

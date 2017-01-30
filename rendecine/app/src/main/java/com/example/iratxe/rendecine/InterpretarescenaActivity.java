@@ -126,7 +126,7 @@ public class InterpretarescenaActivity  extends AppCompatActivity{
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         if (requestCode == VIDEO_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-
+                findViewById(R.id.button_siguienteInterpretarE).setVisibility(View.VISIBLE);
                 findViewById(R.id.verGrabacion).setVisibility(View.VISIBLE);
                 Button button = (Button)findViewById(R.id.verGrabacion);
                 button.setOnClickListener( new View.OnClickListener(){
@@ -189,6 +189,7 @@ public class InterpretarescenaActivity  extends AppCompatActivity{
             //si no, se reproduce otro video
             findViewById(R.id.verGrabacion).setVisibility(View.INVISIBLE);
             findViewById(R.id.interpretarEscenaVideo).setVisibility(View.INVISIBLE);
+            findViewById(R.id.button_siguienteInterpretarE).setVisibility(View.INVISIBLE);
             makeVideo();
         }
 

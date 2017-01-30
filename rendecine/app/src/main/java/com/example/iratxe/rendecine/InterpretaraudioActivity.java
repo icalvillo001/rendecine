@@ -115,19 +115,24 @@ public class InterpretaraudioActivity extends AppCompatActivity {
         }else{
             findViewById(R.id.reproducirAudio).setVisibility(View.INVISIBLE);
             findViewById(R.id.audio).setVisibility(View.INVISIBLE);
+            findViewById(R.id.button_siguienteInterpretarA).setVisibility(View.INVISIBLE);
             LinearLayout layout=(LinearLayout)findViewById(R.id.audio);
             layout.removeAllViews();
-            audioPlayer.release();
+
             makeInterpretarAudio();
         }
 
     }
-    AudioPlayer audioPlayer;
+
+    //AudioPlayer audioPlayer;
+
     public void reproducir(Intent data){
         View audio=new View(this);
         Uri url = data.getData();
 
-        AudioPlayer audioPlayer=new AudioPlayer(audio);
+       // AudioPlayer audioPlayer=new AudioPlayer(audio);
+        final AudioPlayer audioPlayer=new AudioPlayer(audio);
+
         try {
             audioPlayer.setAudioUri(url);
 
@@ -137,13 +142,24 @@ public class InterpretaraudioActivity extends AppCompatActivity {
 
         LinearLayout layout=(LinearLayout)findViewById(R.id.audio);
         layout.addView(audio);
+
+        Button c=(Button)findViewById(R.id.button_siguienteInterpretarA);
+
+        c.setOnClickListener( new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                audioPlayer.quitar();
+                siguienteInterpretarA(view);
+            }
+        });
+
     }
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         if (requestCode == AUDIO_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
 
                 findViewById(R.id.reproducirAudio).setVisibility(View.VISIBLE);
-
+                findViewById(R.id.button_siguienteInterpretarA).setVisibility(View.VISIBLE);
                 Toast.makeText(this, "Audio saved to:\n" +
                         data.getData(), Toast.LENGTH_LONG).show();
                 Button b= (Button)findViewById(R.id.reproducirAudio);
@@ -152,11 +168,10 @@ public class InterpretaraudioActivity extends AppCompatActivity {
                 b.setOnClickListener( new View.OnClickListener(){
                     @Override
                     public void onClick(View view) {
+
                         reproducir(data);
                     }
                 });
-
-
 
 
 
