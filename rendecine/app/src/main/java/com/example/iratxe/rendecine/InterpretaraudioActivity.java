@@ -38,7 +38,7 @@ public class InterpretaraudioActivity extends AppCompatActivity {
     RestClient rest= new RestClient("http://u017633.ehu.eus:28080/rendecineBD/rest/Rendecine");
     Interpretar interpretar = new Interpretar();
 
-    String [] videoURL= {"http://u017633.ehu.eus:28080/static/ServidorTta/AndroidManifest.mp4","http://u017633.ehu.eus:28080/static/ServidorTta/AndroidManifest.mp4","http://u017633.ehu.eus:28080/static/ServidorTta/AndroidManifest.mp4"};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,11 +117,12 @@ public class InterpretaraudioActivity extends AppCompatActivity {
             findViewById(R.id.audio).setVisibility(View.INVISIBLE);
             LinearLayout layout=(LinearLayout)findViewById(R.id.audio);
             layout.removeAllViews();
+            audioPlayer.release();
             makeInterpretarAudio();
         }
 
     }
-
+    AudioPlayer audioPlayer;
     public void reproducir(Intent data){
         View audio=new View(this);
         Uri url = data.getData();

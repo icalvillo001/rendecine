@@ -27,4 +27,12 @@
         android:id="@+id/botonInterpretarAudio"
         android:layout_gravity="center_horizontal"
         android:onClick="interpretarAudio"/>
+
+    <TextView
+        android:textSize="40dp"
+        android:layout_gravity="right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/euskeraObra"
+         />
 </LinearLayout>
